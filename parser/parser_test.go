@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"monkey/ast"
-	"monkey/lexer"
+	"github.com/dangdennis/monkey-go/ast"
+	"github.com/dangdennis/monkey-go/lexer"
 	"testing"
 )
 

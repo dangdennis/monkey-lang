@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"monkey/lexer"
-	"monkey/token"
+	"github.com/dangdennis/monkey-go/lexer"
+	"github.com/dangdennis/monkey-go/token"
 )
 
 // PROMPT signals user for input

@@ -1,6 +1,8 @@
 package lexer
 
-import "monkey/token"
+import (
+	"github.com/dangdennis/monkey-go/token"
+)
 
 // Lexer transform our source code into tokens
 type Lexer struct {

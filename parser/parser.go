@@ -1,9 +1,9 @@
 package parser
 
 import (
-	"monkey/ast"
-	"monkey/lexer"
-	"monkey/token"
+	"github.com/dangdennis/monkey-go/ast"
+	"github.com/dangdennis/monkey-go/lexer"
+	"github.com/dangdennis/monkey-go/token"
 )
 
 // Parser is our Monkey parser!

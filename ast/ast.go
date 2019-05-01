@@ -1,6 +1,8 @@
 package ast
 
-import "monkey/token"
+import (
+	"github.com/dangdennis/monkey-go/token"
+)
 
 // Node is a single unit in our AST
 type Node interface {
@@ -55,4 +57,3 @@ func (i *Identifier) expressionNode() {}
 
 // TokenLiteral of an Identifier is the user's variable name
 func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
-
