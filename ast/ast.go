@@ -38,8 +38,8 @@ func (p *Program) TokenLiteral() string {
 // LetStatement is a Monkey let statement
 type LetStatement struct {
 	Token token.Token // the token.LET token
-	Name  *Identifier
-	Value Expression
+	Name  *Identifier // the x in "let x = 5;"
+	Value Expression  // the 5 in "let x = 5;"
 }
 
 func (ls *LetStatement) statementNode() {}
