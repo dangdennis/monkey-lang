@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/dangdennis/monkey-go/token"
-	// "github.com/dangdennis/monkey-go/token"
 )
 
 func TestString(t *testing.T) {
