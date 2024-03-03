@@ -1,0 +1,6 @@
+(library
+ (inline_tests)
+ (name monkey)
+ (libraries base stdio)
+ (preprocess
+  (pps ppx_jane ppx_expect ppx_inline_test)))

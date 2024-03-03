@@ -1,0 +1,52 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:MonkeyLangSwift}",
+            "name": "Debug MonkeyLangSwift",
+            "program": "${workspaceFolder:MonkeyLangSwift}/.build/debug/MonkeyLangSwift",
+            "preLaunchTask": "swift: Build Debug MonkeyLangSwift"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:MonkeyLangSwift}",
+            "name": "Release MonkeyLangSwift",
+            "program": "${workspaceFolder:MonkeyLangSwift}/.build/release/MonkeyLangSwift",
+            "preLaunchTask": "swift: Build Release MonkeyLangSwift"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:MonkeyLangSwift}",
+            "name": "Debug Monkey",
+            "program": "${workspaceFolder:MonkeyLangSwift}/.build/debug/Monkey",
+            "preLaunchTask": "swift: Build Debug Monkey"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:MonkeyLangSwift}",
+            "name": "Release Monkey",
+            "program": "${workspaceFolder:MonkeyLangSwift}/.build/release/Monkey",
+            "preLaunchTask": "swift: Build Release Monkey"
+        }
+    ]
+}
