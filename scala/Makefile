@@ -1,11 +1,14 @@
 r:
-	scala run src/Main.scala
+	./mill monkey.run
 
 c:
-	scala compile src/
+	./mill compile
 
 f:
 	scala fmt src/
 
 t:
-	scala test src/
+	./mill monkey.test
+
+cl:
+	./mill clean

@@ -1,4 +1,4 @@
-//> using test.dep com.lihaoyi::utest::0.8.4
+package test.monkey
 
 import utest._
 
