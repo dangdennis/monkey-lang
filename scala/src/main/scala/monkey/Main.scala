@@ -1,6 +1,7 @@
 package monkey
 
-@main def run(): Unit =
+@main def main(args: String*): Unit =
+  println(s"Hello ${args.mkString}")
   println("Welcome to Monkey 0.1.0")
   val input = "=+poke(){},;"
   var lex = Lexer.apply(input)
