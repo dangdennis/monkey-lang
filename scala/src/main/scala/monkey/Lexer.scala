@@ -23,16 +23,16 @@ object Lexer:
       if lexer.readPosition >= lexer.input.length() then None
       else Option(lexer.input(lexer.readPosition).toString())
 
-    lexer.copy(
-      ch = ch,
+    Lexer(
+      input = lexer.input,
       position = lexer.readPosition,
-      readPosition = lexer.readPosition + 1
+      readPosition = lexer.readPosition + 1,
+      ch = ch
     )
 
   def nextToken(lexer: Lexer): (Token, Lexer) =
-    val (tokenType, literal) = lexer.ch match
-      case None => (TokenType.Eof, None)
-      case Some(ch) =>
+    val (tokenType, literal) =
+      lexer.ch.fold(TokenType.Eof, None: Option[String]): ch =>
         ch match
           case "=" => (TokenType.Assign, Some("="))
           case ";" => (TokenType.Semicolon, Some(";"))
@@ -42,37 +42,14 @@ object Lexer:
           case "+" => (TokenType.Plus, Some("+"))
           case "{" => (TokenType.LBrace, Some("{"))
           case "}" => (TokenType.RBrace, Some("}"))
-          case _ =>
-            if isLetter(ch) then
-              println("found identifier")
-              (TokenType.Ident, Some(Lexer.readIdentifier(lexer)))
-            else (TokenType.Illegal, None)
+          case _ if isLetter(ch) =>
+            (TokenType.Ident, Some(readIdentifier(lexer)))
+          case _ => (TokenType.Illegal, None)
 
-    (
-      Token(
-        _type = tokenType,
-        literal = literal
-      ),
-      Lexer.readChar(lexer)
-    )
+    (Token(_type = tokenType, literal = literal), readChar(lexer))
 
   private def readIdentifier(lexer: Lexer): String =
-    val startingPos = lexer.position
-
-    var l = lexer
-    val currentChar = lexer.ch
-
-    currentChar match
-      case None => ()
-      case Some(ch) =>
-        var c = ch
-        while isLetter(c) do println(s"$c")
-        l = Lexer.readChar(l)
-        println(l)
-
-    val ident = lexer.input.substring(startingPos, l.readPosition)
-
-    ident
+    lexer.input.drop(lexer.position).takeWhile(ch => isLetter(ch.toString))
 
   def isLetter(ch: String): Boolean =
-    "a" <= ch && ch <= "z" || "A" <= ch && ch <= "Z" || ch == "_" || ch == "?" || ch == "!"
+    ch.matches("[a-zA-Z_?!]")

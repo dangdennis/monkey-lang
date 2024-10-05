@@ -1,42 +1,42 @@
 package monkey
 
-enum TokenType:
-  case Illegal
-  case Eof
+enum TokenType(val literal: String):
+  case Illegal extends TokenType("ILLEGAL")
+  case Eof extends TokenType("EOF")
 
   // identifiers + literals
-  case Ident
-  case Int
+  case Ident extends TokenType("IDENT")
+  case Int extends TokenType("INT")
 
   // operators
-  case Assign
-  case Plus
-  case Minus
-  case Bang
-  case Asterisk
-  case FSlash
+  case Assign extends TokenType("=")
+  case Plus extends TokenType("+")
+  case Minus extends TokenType("-")
+  case Bang extends TokenType("!")
+  case Asterisk extends TokenType("*")
+  case FSlash extends TokenType("/")
 
-  case Lt
-  case Gt
-  case Eq
-  case NotEq
+  case Lt extends TokenType("<")
+  case Gt extends TokenType(">")
+  case Eq extends TokenType("==")
+  case NotEq extends TokenType("!=")
 
   // delimiters
-  case Comma
-  case Semicolon
-  case LParen
-  case RParen
-  case LBrace
-  case RBrace
+  case Comma extends TokenType(",")
+  case Semicolon extends TokenType(";")
+  case LParen extends TokenType("(")
+  case RParen extends TokenType(")")
+  case LBrace extends TokenType("{")
+  case RBrace extends TokenType("}")
 
   // keywords
-  case Function
-  case Let
-  case True
-  case False
-  case If
-  case Else
-  case Return
+  case Function extends TokenType("FUNCTION")
+  case Let extends TokenType("LET")
+  case True extends TokenType("TRUE")
+  case False extends TokenType("FALSE")
+  case If extends TokenType("IF")
+  case Else extends TokenType("ELSE")
+  case Return extends TokenType("RETURN")
 
 case class Token(
     _type: TokenType,

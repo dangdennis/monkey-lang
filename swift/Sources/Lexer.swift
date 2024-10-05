@@ -43,7 +43,7 @@ extension Lexer {
 
     self.readChar()
 
-    return tok
+    return Token(type: tokenType, literal: literal)
   }
 }
 

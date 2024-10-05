@@ -31,9 +31,9 @@
                 "swift"
             ],
             "args": [],
-            "cwd": "${workspaceFolder:MonkeyLangSwift}",
+            "cwd": "${workspaceFolder:swift}",
             "name": "Debug Monkey",
-            "program": "${workspaceFolder:MonkeyLangSwift}/.build/debug/Monkey",
+            "program": "${workspaceFolder:swift}/.build/debug/Monkey",
             "preLaunchTask": "swift: Build Debug Monkey"
         },
         {
@@ -43,9 +43,9 @@
                 "swift"
             ],
             "args": [],
-            "cwd": "${workspaceFolder:MonkeyLangSwift}",
+            "cwd": "${workspaceFolder:swift}",
             "name": "Release Monkey",
-            "program": "${workspaceFolder:MonkeyLangSwift}/.build/release/Monkey",
+            "program": "${workspaceFolder:swift}/.build/release/Monkey",
             "preLaunchTask": "swift: Build Release Monkey"
         }
     ]
