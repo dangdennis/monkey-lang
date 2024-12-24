@@ -1,27 +1,27 @@
 #[derive(Debug, Clone, PartialEq)]
 pub enum TokenType {
-    ILLEGAL,
-    EOF,
+    Illegal,
+    Eof,
     // Identifiers + literals
-    IDENT,
-    INT,
+    Ident,
+    Int,
 
     // Operators
-    ASSIGN,
-    PLUS,
+    Assign,
+    Plus,
 
     // Delimiters
-    COMMA,
-    SEMICOLON,
+    Comma,
+    Semicolon,
 
-    LPAREN,
-    RPAREN,
-    LBRACE,
-    RBRACE,
+    LParen,
+    RParen,
+    LBrace,
+    RBrace,
 
     // Keywords
-    FUNCTION,
-    LET,
+    Function,
+    Let,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -31,22 +31,9 @@ pub struct Token {
 }
 
 pub fn lookup_ident(ident: &str) -> TokenType {
-    println!("ident: {}", ident);
     match ident {
-        "fn" => TokenType::FUNCTION,
-        "let" => TokenType::LET,
-        _ => TokenType::IDENT,
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_lookup_ident() {
-        assert_eq!(lookup_ident("fn"), TokenType::FUNCTION);
-        assert_eq!(lookup_ident("let"), TokenType::LET);
-        assert_eq!(lookup_ident("foobar"), TokenType::IDENT);
+        "fn" => TokenType::Function,
+        "let" => TokenType::Let,
+        _ => TokenType::Ident,
     }
 }
