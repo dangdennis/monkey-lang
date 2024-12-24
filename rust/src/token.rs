@@ -30,11 +30,23 @@ pub struct Token {
     pub literal: Option<String>,
 }
 
-static KEYWORDS: &[(&str, TokenType)] = &[("fn", TokenType::FUNCTION), ("let", TokenType::LET)];
-
 pub fn lookup_ident(ident: &str) -> TokenType {
-    KEYWORDS
-        .iter()
-        .find(|item| item.0 == ident)
-        .map_or(TokenType::IDENT, |ident| ident.1.clone())
+    println!("ident: {}", ident);
+    match ident {
+        "fn" => TokenType::FUNCTION,
+        "let" => TokenType::LET,
+        _ => TokenType::IDENT,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_lookup_ident() {
+        assert_eq!(lookup_ident("fn"), TokenType::FUNCTION);
+        assert_eq!(lookup_ident("let"), TokenType::LET);
+        assert_eq!(lookup_ident("foobar"), TokenType::IDENT);
+    }
 }
