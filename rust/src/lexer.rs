@@ -1,4 +1,4 @@
-use crate::token::{self, Token, TokenType};
+use crate::token::{lookup_ident, Token, TokenType};
 
 pub struct Lexer {
     pub input: String,
@@ -66,7 +66,7 @@ impl Lexer {
                     if is_letter(ch.chars().nth(0).unwrap()) {
                         let literal = self.read_identifier();
                         return Token {
-                            token_type: token::lookup_ident(&literal),
+                            token_type: lookup_ident(&literal),
                             literal: Some(literal),
                         };
                     } else if is_digit(ch.chars().nth(0).unwrap()) {
@@ -154,8 +154,8 @@ impl Lexer {
 }
 
 fn is_letter(ch: char) -> bool {
-    'a' <= ch && ch <= 'z'
-        || 'A' <= ch && ch <= 'Z'
+    ('a'..='z').contains(&ch)
+        || ('A'..='Z').contains(&ch)
         || ch == '_'
         || ch == '?'
         || ch == '!'
@@ -164,5 +164,5 @@ fn is_letter(ch: char) -> bool {
 }
 
 fn is_digit(ch: char) -> bool {
-    '0' <= ch && ch <= '9'
+    ('0'..='9').contains(&ch)
 }
