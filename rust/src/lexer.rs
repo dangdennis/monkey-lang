@@ -154,8 +154,8 @@ impl Lexer {
 }
 
 fn is_letter(ch: char) -> bool {
-    ('a'..='z').contains(&ch)
-        || ('A'..='Z').contains(&ch)
+    ch.is_ascii_lowercase()
+        || ch.is_ascii_uppercase()
         || ch == '_'
         || ch == '?'
         || ch == '!'
@@ -164,5 +164,5 @@ fn is_letter(ch: char) -> bool {
 }
 
 fn is_digit(ch: char) -> bool {
-    ('0'..='9').contains(&ch)
+    ch.is_ascii_digit()
 }
