@@ -44,6 +44,29 @@ pub struct Token {
     pub literal: Option<String>,
 }
 
+impl Token {
+    pub fn new(token_type: TokenType, literal: impl Into<String>) -> Token {
+        Token {
+            token_type,
+            literal: Some(literal.into()),
+        }
+    }
+
+    pub fn eof() -> Self {
+        Self {
+            token_type: TokenType::Eof,
+            literal: None,
+        }
+    }
+
+    pub fn illegal() -> Self {
+        Self {
+            token_type: TokenType::Illegal,
+            literal: None,
+        }
+    }
+}
+
 pub fn lookup_ident(ident: &str) -> TokenType {
     match ident {
         "fn" => TokenType::Function,

@@ -66,7 +66,7 @@ fn test_next_token_simple() {
         },
     ];
 
-    let mut lexer = Lexer::new(input.to_string());
+    let mut lexer = Lexer::new(input);
 
     for test in tests.iter() {
         let token = lexer.next_token();
@@ -78,25 +78,25 @@ fn test_next_token_simple() {
 #[test]
 fn test_next_token_syntax() {
     let input = r#"let five = 5;
-   let ten = 10;
+    let ten = 10;
 
-   let add = fn(x, y) {
-     x + y;
-   };
+    let add = fn(x, y) {
+      x + y;
+    };
 
-   let result = add(five, ten);
-   !-/*5;
-   5 < 10 > 5;
+    let result = add(five, ten);
+    !-/*5;
+    5 < 10 > 5;
 
-   if (5 < 10) {
-	return true;
-   } else {
-	return false;
-   }
+    if (5 < 10) {
+    return true;
+    } else {
+    return false;
+    }
 
-   10 == 10;
-   10 != 9;
-        "#;
+    10 == 10;
+    10 != 9;
+         "#;
 
     #[derive(Debug)]
     struct Test {
@@ -403,7 +403,7 @@ fn test_next_token_syntax() {
         },
     ];
 
-    let mut lexer = Lexer::new(input.to_string());
+    let mut lexer = Lexer::new(input);
     for test in tests.iter() {
         let token = lexer.next_token();
         assert_eq!(

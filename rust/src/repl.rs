@@ -1,6 +1,6 @@
-use std::io::{self, Write};
 use crate::lexer;
 use crate::token;
+use std::io::{self, Write};
 
 pub fn start() {
     let stdin = io::stdin();
@@ -15,7 +15,7 @@ pub fn start() {
             if buffer.trim().is_empty() {
                 continue;
             } else {
-                let mut lexer = lexer::Lexer::new(buffer);
+                let mut lexer = lexer::Lexer::new(&buffer);
                 for token in std::iter::from_fn(|| {
                     let t = lexer.next_token();
                     if t.token_type == token::TokenType::Eof {
