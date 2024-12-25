@@ -11,7 +11,7 @@ pub fn start() {
         let _ = stdout.flush();
         let mut buffer = String::new();
         let input = stdin.read_line(&mut buffer);
-        if let Ok(_) = input {
+        if input.is_ok() {
             if buffer.trim().is_empty() {
                 continue;
             } else {
@@ -30,8 +30,7 @@ pub fn start() {
         } else {
             println!("> failed to read stdin")
         }
-        ()
     }
 }
 
-const PROMPT: &'static str = ">> ";
+const PROMPT: &str = ">> ";

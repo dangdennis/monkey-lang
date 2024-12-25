@@ -17,7 +17,7 @@ impl<'a> Lexer<'a> {
     pub fn next_token(&mut self) -> Token {
         self.skip_whitespace();
 
-        let token = match self.current {
+        match self.current {
             None => Token::eof(),
             Some(ch) => match ch {
                 '=' => self.handle_equals(),
@@ -49,9 +49,7 @@ impl<'a> Lexer<'a> {
                     token
                 }
             },
-        };
-
-        token
+        }
     }
 
     fn advance(&mut self) {
