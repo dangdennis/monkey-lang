@@ -3,7 +3,6 @@ use std::{iter::Peekable, str::Chars};
 use crate::token::{lookup_ident, Token, TokenType};
 
 pub struct Lexer<'a> {
-    pub input: &'a str,
     chars: Peekable<Chars<'a>>,
     current: Option<char>,
 }
@@ -12,11 +11,7 @@ impl<'a> Lexer<'a> {
     pub fn new(input: &'a str) -> Self {
         let mut chars = input.chars().peekable();
         let current = chars.next();
-        Self {
-            input,
-            chars,
-            current,
-        }
+        Self { chars, current }
     }
 
     pub fn next_token(&mut self) -> Token {
