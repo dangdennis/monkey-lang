@@ -3,7 +3,7 @@ use monkey::token::TokenType;
 
 #[test]
 fn test_next_token_simple() {
-    let input = "=+(){},;";
+    let input = "=+(){},;*/-+!";
 
     #[derive(Debug)]
     struct Test {
@@ -44,6 +44,26 @@ fn test_next_token_simple() {
             expected_type: TokenType::Semicolon,
             expected_literal: Some(";".to_string()),
         },
+        Test {
+            expected_type: TokenType::Asterisk,
+            expected_literal: Some("*".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Slash,
+            expected_literal: Some("/".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Minus,
+            expected_literal: Some("-".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Plus,
+            expected_literal: Some("+".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Bang,
+            expected_literal: Some("!".to_string()),
+        },
     ];
 
     let mut lexer = Lexer::new(input.to_string());
@@ -57,15 +77,25 @@ fn test_next_token_simple() {
 
 #[test]
 fn test_next_token_syntax() {
-    let input = r#"
-            let five = 5;
-            let ten = 10;
+    let input = r#"let five = 5;
+   let ten = 10;
 
-            let add = fn(x, y) {
-                x + y;
-            };
+   let add = fn(x, y) {
+     x + y;
+   };
 
-            let result = add(five, ten);
+   let result = add(five, ten);
+   !-/*5;
+   5 < 10 > 5;
+
+   if (5 < 10) {
+	return true;
+   } else {
+	return false;
+   }
+
+   10 == 10;
+   10 != 9;
         "#;
 
     #[derive(Debug)]
@@ -214,6 +244,154 @@ fn test_next_token_syntax() {
         Test {
             expected_type: TokenType::RParen,
             expected_literal: Some(")".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Semicolon,
+            expected_literal: Some(";".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Bang,
+            expected_literal: Some("!".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Minus,
+            expected_literal: Some("-".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Slash,
+            expected_literal: Some("/".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Asterisk,
+            expected_literal: Some("*".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Int,
+            expected_literal: Some("5".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Semicolon,
+            expected_literal: Some(";".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Int,
+            expected_literal: Some("5".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Lt,
+            expected_literal: Some("<".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Int,
+            expected_literal: Some("10".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Gt,
+            expected_literal: Some(">".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Int,
+            expected_literal: Some("5".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Semicolon,
+            expected_literal: Some(";".to_string()),
+        },
+        Test {
+            expected_type: TokenType::If,
+            expected_literal: Some("if".to_string()),
+        },
+        Test {
+            expected_type: TokenType::LParen,
+            expected_literal: Some("(".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Int,
+            expected_literal: Some("5".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Lt,
+            expected_literal: Some("<".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Int,
+            expected_literal: Some("10".to_string()),
+        },
+        Test {
+            expected_type: TokenType::RParen,
+            expected_literal: Some(")".to_string()),
+        },
+        Test {
+            expected_type: TokenType::LBrace,
+            expected_literal: Some("{".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Return,
+            expected_literal: Some("return".to_string()),
+        },
+        Test {
+            expected_type: TokenType::True,
+            expected_literal: Some("true".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Semicolon,
+            expected_literal: Some(";".to_string()),
+        },
+        Test {
+            expected_type: TokenType::RBrace,
+            expected_literal: Some("}".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Else,
+            expected_literal: Some("else".to_string()),
+        },
+        Test {
+            expected_type: TokenType::LBrace,
+            expected_literal: Some("{".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Return,
+            expected_literal: Some("return".to_string()),
+        },
+        Test {
+            expected_type: TokenType::False,
+            expected_literal: Some("false".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Semicolon,
+            expected_literal: Some(";".to_string()),
+        },
+        Test {
+            expected_type: TokenType::RBrace,
+            expected_literal: Some("}".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Int,
+            expected_literal: Some("10".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Eq,
+            expected_literal: Some("==".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Int,
+            expected_literal: Some("10".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Semicolon,
+            expected_literal: Some(";".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Int,
+            expected_literal: Some("10".to_string()),
+        },
+        Test {
+            expected_type: TokenType::NotEq,
+            expected_literal: Some("!=".to_string()),
+        },
+        Test {
+            expected_type: TokenType::Int,
+            expected_literal: Some("9".to_string()),
         },
         Test {
             expected_type: TokenType::Semicolon,

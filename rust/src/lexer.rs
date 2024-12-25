@@ -30,9 +30,25 @@ impl Lexer {
                 literal: None,
             },
             Some(ch) => match ch.as_str() {
-                "=" => Token {
-                    token_type: TokenType::Assign,
-                    literal: Some(String::from("=")),
+                "=" => match self.peek_char() {
+                    Some(peeked_ch) => {
+                        if peeked_ch == "=" {
+                            self.read_char();
+                            Token {
+                                token_type: TokenType::Eq,
+                                literal: Some("==".to_string()),
+                            }
+                        } else {
+                            Token {
+                                token_type: TokenType::Assign,
+                                literal: Some(String::from("=")),
+                            }
+                        }
+                    }
+                    None => Token {
+                        token_type: TokenType::Assign,
+                        literal: Some(String::from("=")),
+                    },
                 },
                 ";" => Token {
                     token_type: TokenType::Semicolon,
@@ -46,14 +62,6 @@ impl Lexer {
                     token_type: TokenType::RParen,
                     literal: Some(String::from(")")),
                 },
-                "," => Token {
-                    token_type: TokenType::Comma,
-                    literal: Some(String::from(",")),
-                },
-                "+" => Token {
-                    token_type: TokenType::Plus,
-                    literal: Some(String::from("+")),
-                },
                 "{" => Token {
                     token_type: TokenType::LBrace,
                     literal: Some(String::from("{")),
@@ -62,19 +70,71 @@ impl Lexer {
                     token_type: TokenType::RBrace,
                     literal: Some(String::from("}")),
                 },
+                "/" => Token {
+                    token_type: TokenType::Slash,
+                    literal: Some(String::from("/")),
+                },
+                "," => Token {
+                    token_type: TokenType::Comma,
+                    literal: Some(String::from(",")),
+                },
+                "+" => Token {
+                    token_type: TokenType::Plus,
+                    literal: Some(String::from("+")),
+                },
+                "-" => Token {
+                    token_type: TokenType::Minus,
+                    literal: Some(String::from("-")),
+                },
+                "*" => Token {
+                    token_type: TokenType::Asterisk,
+                    literal: Some(String::from("*")),
+                },
+                "<" => Token {
+                    token_type: TokenType::Lt,
+                    literal: Some(String::from("<")),
+                },
+                ">" => Token {
+                    token_type: TokenType::Gt,
+                    literal: Some(String::from(">")),
+                },
+                "!" => match self.peek_char() {
+                    Some(peeked_ch) => {
+                        if peeked_ch == "=" {
+                            self.read_char();
+                            Token {
+                                token_type: TokenType::NotEq,
+                                literal: Some("!=".to_string()),
+                            }
+                        } else {
+                            Token {
+                                token_type: TokenType::Bang,
+                                literal: Some(String::from("!")),
+                            }
+                        }
+                    }
+                    None => Token {
+                        token_type: TokenType::Bang,
+                        literal: Some(String::from("!")),
+                    },
+                },
                 _ => {
                     if is_letter(ch.chars().nth(0).unwrap()) {
                         let literal = self.read_identifier();
-                        return Token {
+                        let token = Token {
                             token_type: lookup_ident(&literal),
                             literal: Some(literal),
                         };
+                        println!("token1 {token:?}");
+                        return token;
                     } else if is_digit(ch.chars().nth(0).unwrap()) {
                         let literal = self.read_number();
-                        return Token {
+                        let token = Token {
                             token_type: TokenType::Int,
                             literal: Some(literal),
                         };
+                        println!("token2 {token:?}");
+                        return token;
                     } else {
                         Token {
                             token_type: TokenType::Illegal,
@@ -85,11 +145,14 @@ impl Lexer {
             },
         };
 
+        println!("token3 {token:?}");
+
         self.read_char();
+
         token
     }
 
-    pub fn read_char(&mut self) {
+    fn read_char(&mut self) {
         if self.read_position as usize >= self.input.len() {
             self.ch = None;
         } else {
@@ -105,7 +168,7 @@ impl Lexer {
         self.read_position += 1;
     }
 
-    pub fn read_number(&mut self) -> String {
+    fn read_number(&mut self) -> String {
         let position = self.position;
         while let Some(ch) = self.ch.as_ref() {
             if is_digit(ch.chars().nth(0).unwrap()) {
@@ -123,7 +186,7 @@ impl Lexer {
         ident
     }
 
-    pub fn read_identifier(&mut self) -> String {
+    fn read_identifier(&mut self) -> String {
         let position = self.position;
         while let Some(ch) = self.ch.as_ref() {
             if is_letter(ch.chars().nth(0).unwrap()) {
@@ -141,7 +204,7 @@ impl Lexer {
         ident
     }
 
-    pub fn skip_whitespace(&mut self) {
+    fn skip_whitespace(&mut self) {
         while let Some(ch) = &self.ch {
             match ch.as_str() {
                 " " | "\t" | "\n" | "\r" => {
@@ -151,16 +214,21 @@ impl Lexer {
             }
         }
     }
+
+    fn peek_char(&mut self) -> Option<String> {
+        if self.read_position as usize >= self.input.len() {
+            None
+        } else {
+            self.input
+                .chars()
+                .nth(self.read_position as usize)
+                .map(|ch| ch.to_string())
+        }
+    }
 }
 
 fn is_letter(ch: char) -> bool {
-    ch.is_ascii_lowercase()
-        || ch.is_ascii_uppercase()
-        || ch == '_'
-        || ch == '?'
-        || ch == '!'
-        || ch == '?'
-        || ch == '!'
+    ch.is_ascii_lowercase() || ch.is_ascii_uppercase() || ch == '_' || ch == '?' || ch == '!'
 }
 
 fn is_digit(ch: char) -> bool {
