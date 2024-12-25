@@ -125,7 +125,6 @@ impl Lexer {
                             token_type: lookup_ident(&literal),
                             literal: Some(literal),
                         };
-                        println!("token1 {token:?}");
                         return token;
                     } else if is_digit(ch.chars().nth(0).unwrap()) {
                         let literal = self.read_number();
@@ -133,7 +132,6 @@ impl Lexer {
                             token_type: TokenType::Int,
                             literal: Some(literal),
                         };
-                        println!("token2 {token:?}");
                         return token;
                     } else {
                         Token {
@@ -144,8 +142,6 @@ impl Lexer {
                 }
             },
         };
-
-        println!("token3 {token:?}");
 
         self.read_char();
 
