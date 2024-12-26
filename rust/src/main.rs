@@ -1,6 +1,4 @@
-mod lexer;
-mod token;
-mod repl;
+use monkey::repl;
 
 fn main() {
     repl::start();

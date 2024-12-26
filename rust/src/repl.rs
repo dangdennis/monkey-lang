@@ -1,10 +1,16 @@
-use crate::lexer;
-use crate::token;
 use std::io::{self, Write};
+
+use crate::{lexer, token, user::User};
 
 pub fn start() {
     let stdin = io::stdin();
     let mut stdout = io::stdout();
+    let user = User::current().unwrap();
+    let username = user.username();
+    println!("Hello {}! This is the Monkey programming language!", {
+        username
+    });
+    println!("Feel free to type in commands");
 
     loop {
         print!("{PROMPT}");
