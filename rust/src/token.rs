@@ -41,28 +41,28 @@ pub enum TokenType {
 #[derive(Debug, Clone, PartialEq)]
 pub struct Token {
     pub token_type: TokenType,
-    pub literal: Option<String>,
+    pub literal: String,
 }
 
 impl Token {
     pub fn new(token_type: TokenType, literal: impl Into<String>) -> Token {
         Token {
             token_type,
-            literal: Some(literal.into()),
+            literal: literal.into(),
         }
     }
 
     pub fn eof() -> Self {
         Self {
             token_type: TokenType::Eof,
-            literal: None,
+            literal: String::new(),
         }
     }
 
     pub fn illegal() -> Self {
         Self {
             token_type: TokenType::Illegal,
-            literal: None,
+            literal: String::new(),
         }
     }
 }
@@ -77,5 +77,17 @@ pub fn lookup_ident(ident: &str) -> TokenType {
         "else" => TokenType::Else,
         "return" => TokenType::Return,
         _ => TokenType::Ident,
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::token::{lookup_ident, TokenType};
+
+    #[test]
+    fn test_lookup_ident() {
+        assert_eq!(lookup_ident("fn"), TokenType::Function);
+        assert_eq!(lookup_ident("let"), TokenType::Let);
+        assert_eq!(lookup_ident("foobar"), TokenType::Ident);
     }
 }
