@@ -88,6 +88,11 @@ mod test {
     fn test_lookup_ident() {
         assert_eq!(lookup_ident("fn"), TokenType::Function);
         assert_eq!(lookup_ident("let"), TokenType::Let);
+        assert_eq!(lookup_ident("true"), TokenType::True);
+        assert_eq!(lookup_ident("false"), TokenType::False);
+        assert_eq!(lookup_ident("if"), TokenType::If);
+        assert_eq!(lookup_ident("else"), TokenType::Else);
+        assert_eq!(lookup_ident("return"), TokenType::Return);
         assert_eq!(lookup_ident("foobar"), TokenType::Ident);
     }
 }

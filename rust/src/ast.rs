@@ -18,6 +18,7 @@ pub trait Node {
 #[derive(Debug)]
 pub enum Statement {
     Let(LetStatement),
+    Return(ReturnStatement),
 }
 
 #[derive(Debug)]
@@ -25,6 +26,12 @@ pub struct LetStatement {
     pub name: String,
     pub token: token::Token,
     pub value: Option<Expression>,
+}
+
+#[derive(Debug)]
+pub struct ReturnStatement {
+    pub token: token::Token,
+    pub return_value: Option<Expression>,
 }
 
 #[derive(Debug)]
@@ -52,6 +59,7 @@ impl Node for Statement {
     fn token_literal(&self) -> String {
         match self {
             Statement::Let(let_stmt) => let_stmt.token.literal.clone(),
+            Self::Return(ret_stmt) => ret_stmt.token.literal.clone(),
         }
     }
 }
