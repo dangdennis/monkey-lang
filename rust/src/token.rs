@@ -6,6 +6,7 @@ pub enum TokenType {
     // Identifiers + literals
     Ident,
     Int,
+    String,
 
     // Operators
     Assign,
@@ -22,11 +23,14 @@ pub enum TokenType {
     // Delimiters
     Comma,
     Semicolon,
+    Colon,
 
     LParen,
     RParen,
     LBrace,
     RBrace,
+    LBracket,
+    RBracket,
 
     // Keywords
     Function,

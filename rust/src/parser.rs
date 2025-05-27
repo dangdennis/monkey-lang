@@ -84,7 +84,10 @@ impl<'a> Parser<'a> {
             return None;
         }
 
-        let name = self.curr_token.literal.clone();
+        let name = ast::Identifier {
+            token: self.curr_token.clone(),
+            value: self.curr_token.literal.clone(),
+        };
 
         if !self.expect_peek(&token::TokenType::Assign) {
             return None;
@@ -168,7 +171,10 @@ impl<'a> Parser<'a> {
 
     fn parse_integer_literal(&mut self) -> Option<ast::Expression> {
         let value = self.curr_token.literal.parse::<i64>().ok()?;
-        Some(ast::Expression::IntegerLiteral(value))
+        Some(ast::Expression::IntegerLiteral(ast::IntegerLiteral {
+            token: self.curr_token.clone(),
+            value,
+        }))
     }
 
     fn parse_prefix_expression(&mut self) -> Option<ast::Expression> {
@@ -177,6 +183,7 @@ impl<'a> Parser<'a> {
         self.next_token();
 
         Some(ast::Expression::PrefixExpression {
+            token: token.clone(),
             operator: token.literal,
             right: Box::new(self.parse_expression(Precedence::Prefix)?),
         })
@@ -189,11 +196,15 @@ impl<'a> Parser<'a> {
         self.next_token();
 
         ast::Expression::InfixExpression {
+            token: token.clone(),
             left: Box::new(left),
             operator: token.literal,
             right: Box::new(
                 self.parse_expression(precedence)
-                    .unwrap_or(ast::Expression::IntegerLiteral(0)),
+                    .unwrap_or(ast::Expression::IntegerLiteral(ast::IntegerLiteral {
+                        token: crate::token::Token::new(crate::token::TokenType::Int, "0"),
+                        value: 0,
+                    })),
             ),
         }
     }
@@ -414,7 +425,7 @@ mod test {
             ..
         }) = program.statements.get(0).unwrap()
         {
-            assert_eq!(*val, 5, "expected value of 5. got={}", val);
+            assert_eq!(val.value, 5, "expected value of 5. got={}", val);
         } else {
             panic!("expected expression statement");
         }
@@ -442,6 +453,7 @@ mod test {
                     Some(ast::Expression::PrefixExpression {
                         operator: op,
                         right,
+                        ..
                     }),
                 ..
             }) = program.statements.get(0).unwrap()
@@ -456,7 +468,7 @@ mod test {
 
     fn assert_integer_literal(il: ast::Expression, value: i64) -> bool {
         if let ast::Expression::IntegerLiteral(val) = il {
-            val == value
+            val.value == value
         } else {
             false
         }
@@ -494,6 +506,7 @@ mod test {
                         left: got_left,
                         operator: got_op,
                         right: got_right,
+                        ..
                     }),
                 ..
             })) = program.statements.get(0)
