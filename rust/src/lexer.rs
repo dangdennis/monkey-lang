@@ -16,7 +16,6 @@ impl<'a> Lexer<'a> {
 
     pub fn next_token(&mut self) -> Token {
         self.skip_whitespace();
-
         match self.current {
             None => Token::eof(),
             Some(ch) => match ch {

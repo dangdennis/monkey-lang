@@ -87,25 +87,31 @@ impl fmt::Display for ReturnStatement {
 }
 
 // ExpressionStatement is a statement that consists of a single expression.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ExpressionStatement {
     pub token: token::Token, // first token in the expression
-    pub expression: Expression,
+    pub expression: Option<Expression>,
 }
 
 impl fmt::Display for ExpressionStatement {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.expression.token_literal())
+        write!(
+            f,
+            "{}",
+            self.expression
+                .clone()
+                .map_or("".to_string(), |f| f.token_literal())
+        )
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Identifier {
     pub token: token::Token, // The Ident token
     pub value: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Expression {
     Identifier(Identifier),
     IntegerLiteral(i64),
@@ -118,6 +124,23 @@ pub enum Expression {
         operator: String,
         right: Box<Expression>,
     },
+}
+
+impl fmt::Display for Expression {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Expression::Identifier(identifier) => write!(f, "{}", identifier.value),
+            Expression::IntegerLiteral(val) => write!(f, "{}", val),
+            Expression::PrefixExpression { operator, right } => {
+                write!(f, "({}{})", operator, right)
+            }
+            Expression::InfixExpression {
+                left,
+                right,
+                operator,
+            } => write!(f, "({} {} {})", left, operator, right),
+        }
+    }
 }
 
 impl Node for Statement {
@@ -154,20 +177,18 @@ impl Node for Identifier {
 }
 
 mod tests {
-    use super::*;
-
     #[test]
     fn test_string() {
-        let program = Program {
-            statements: vec![Statement::Let(LetStatement {
-                token: token::Token {
-                    token_type: token::TokenType::Let,
+        let program = crate::ast::Program {
+            statements: vec![crate::ast::Statement::Let(crate::ast::LetStatement {
+                token: crate::token::Token {
+                    token_type: crate::token::TokenType::Let,
                     literal: "let".to_string(),
                 },
                 name: "myVar".to_string(),
-                value: Some(Expression::Identifier(Identifier {
-                    token: token::Token {
-                        token_type: token::TokenType::Ident,
+                value: Some(crate::ast::Expression::Identifier(crate::ast::Identifier {
+                    token: crate::token::Token {
+                        token_type: crate::token::TokenType::Ident,
                         literal: "anotherVar".to_string(),
                     },
                     value: "anotherVar".to_string(),
