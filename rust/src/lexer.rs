@@ -21,16 +21,20 @@ impl<'a> Lexer<'a> {
             Some(ch) => match ch {
                 '=' => self.handle_equals(),
                 '!' => self.handle_bang(),
+                '"' => self.read_string(),
                 ch if is_letter(ch) => self.read_identifier(),
                 ch if is_digit(ch) => self.read_number(),
                 ch => {
                     let token = Token::new(
                         match ch {
                             ';' => TokenType::Semicolon,
+                            ':' => TokenType::Colon,
                             '(' => TokenType::LParen,
                             ')' => TokenType::RParen,
                             '{' => TokenType::LBrace,
                             '}' => TokenType::RBrace,
+                            '[' => TokenType::LBracket,
+                            ']' => TokenType::RBracket,
                             '+' => TokenType::Plus,
                             '-' => TokenType::Minus,
                             '*' => TokenType::Asterisk,
@@ -124,6 +128,26 @@ impl<'a> Lexer<'a> {
         } else {
             self.advance();
             Token::new(TokenType::Bang, "!".to_string())
+        }
+    }
+
+    fn read_string(&mut self) -> Token {
+        self.advance(); // Skip opening quote
+        let mut string = String::new();
+        
+        while let Some(ch) = self.current {
+            if ch == '"' || ch == '\0' {
+                break;
+            }
+            string.push(ch);
+            self.advance();
+        }
+        
+        self.advance(); // Skip closing quote
+        
+        Token {
+            token_type: TokenType::String,
+            literal: string,
         }
     }
 }
